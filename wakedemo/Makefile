@@ -11,10 +11,22 @@ all:wakedemo.elf
 
 #additional rules for files
 wakedemo.elf: ${COMMON_OBJECTS} wakedemo.o wdt_handler.o
+	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^ -lTimer -lLcd -lCircle -lp2sw 
+
+wakedemo2.elf: ${COMMON_OBJECTS} chooseColorA.o  wakedemo.o wdt_handler.o
 	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^ -lTimer -lLcd 
 
 load: wakedemo.elf
 	msp430loader.sh $^
+
+load2: wakedemo2.elf
+	msp430loader.sh $^
+
+wakedemo.o: wakedemo.c wake.h
+
+chooseColor.o: chooseColor.c wake.h
+
+chooseColorA.o: chooseColorA.s wake.h
 
 clean:
 	rm -f *.o *.elf

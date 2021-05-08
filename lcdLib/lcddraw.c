@@ -37,6 +37,79 @@ void fillRectangle(u_char colMin, u_char rowMin, u_char width, u_char height,
   }
 }
 
+void makeDiamond(){
+  u_char offset_r = 80, offset_c = 60;
+  
+  for( int r = 0; r <= 30; r++){
+    for (int c = 0; c <= 30-r; c++){
+      drawPixel(offset_c - c, offset_r + r, COLOR_PURPLE);
+      drawPixel(offset_c + c, offset_r + r, COLOR_PURPLE);
+    }
+  }
+  
+  for( int r = 0; r <= 30; r++){
+    for (int c = 0; c <= 30-r; c++){
+      drawPixel(offset_c + c, offset_r - r, COLOR_PURPLE);
+      drawPixel(offset_c - c, offset_r - r, COLOR_PURPLE);
+    }
+  }
+}
+
+void makeDiamond1(){
+  u_char offset_r = 80, offset_c = 60;
+  
+  for( int r = 0; r <= 30; r++){
+    for (int c = 0; c <= 30-r; c++){
+      drawPixel(offset_c - c, offset_r + r, COLOR_RED);
+      drawPixel(offset_c + c, offset_r + r, COLOR_RED);
+    }
+  }
+  
+  for( int r = 0; r <= 30; r++){
+    for (int c = 0; c <= 30-r; c++){
+      drawPixel(offset_c + c, offset_r - r, COLOR_RED);
+      drawPixel(offset_c - c, offset_r - r, COLOR_RED);
+    }
+  }
+}
+
+void makeDiamond2(){
+  u_char offset_r = 80, offset_c = 60;
+  
+  for( int r = 0; r <= 60; r++){
+    for (int c = 0; c <= 60-r; c++){
+      drawPixel(offset_c - c, offset_r + r, COLOR_RED);
+      drawPixel(offset_c + c, offset_r + r, COLOR_RED);
+    }
+  }
+  
+  for( int r = 0; r <= 60; r++){
+    for (int c = 0; c <= 60-r; c++){
+      drawPixel(offset_c + c, offset_r - r, COLOR_PURPLE);
+      drawPixel(offset_c - c, offset_r - r, COLOR_PURPLE);
+    }
+  }
+}
+
+
+void makeDiamond3(){
+  u_char offset_r = 80, offset_c = 60;
+  
+  for( int r = 0; r <= 10; r++){
+    for (int c = 0; c <= 10-r; c++){
+      drawPixel(offset_c - c, offset_r + r, COLOR_PURPLE);
+      drawPixel(offset_c + c, offset_r + r, COLOR_PURPLE);
+    }
+  }
+  
+  for( int r = 0; r <= 10; r++){
+    for (int c = 0; c <= 10-r; c++){
+      drawPixel(offset_c + c, offset_r - r, COLOR_RED);
+      drawPixel(offset_c - c, offset_r - r, COLOR_RED);
+    }
+  }
+}
+
 /** Clear screen (fill with color)
  *  
  *  \param colorBGR The color to fill screen
@@ -51,18 +124,18 @@ void clearScreen(u_int colorBGR)
 /** 5x7 font - this function draws background pixels
  *  Adapted from RobG's EduKit
  */
-void drawChar5x7(u_char rcol, u_char rrow, char c, 
+void drawChar11x16(u_char rcol, u_char rrow, char c, 
      u_int fgColorBGR, u_int bgColorBGR) 
 {
-  u_char col = 0;
-  u_char row = 0;
-  u_char bit = 0x01;
-  u_char oc = c - 0x20;
+  u_int col = 0;
+  u_int row = 0;
+  u_int bit = 0x01;
+  u_int oc = c - 0x20;
 
-  lcd_setArea(rcol, rrow, rcol + 4, rrow + 7); /* relative to requested col/row */
-  while (row < 8) {
-    while (col < 5) {
-      u_int colorBGR = (font_5x7[oc][col] & bit) ? fgColorBGR : bgColorBGR;
+  lcd_setArea(rcol, rrow, rcol + 10, rrow + 15); /* relative to requested col/row */
+  while (row < 16) {
+    while (col < 11) {
+      u_int colorBGR = (font_11x16[oc][col] & bit) ? fgColorBGR : bgColorBGR;
       lcd_writeColor(colorBGR);
       col++;
     }
@@ -84,34 +157,12 @@ void drawChar5x7(u_char rcol, u_char rrow, char c,
  *  \param fgColorBGR Foreground color in BGR
  *  \param bgColorBGR Background color in BGR
  */
-void drawString5x7(u_char col, u_char row, char *string,
+void drawString11x16(u_char col, u_char row, char *string,
 		u_int fgColorBGR, u_int bgColorBGR)
 {
   u_char cols = col;
   while (*string) {
-    drawChar5x7(cols, row, *string++, fgColorBGR, bgColorBGR);
-    cols += 6;
+    drawChar11x16(cols, row, *string++, fgColorBGR, bgColorBGR);
+    cols += 9;
   }
 }
-
-
-/** Draw rectangle outline
- *  
- *  \param colMin Column start
- *  \param rowMin Row start 
- *  \param width Width of rectangle
- *  \param height Height of rectangle
- *  \param colorBGR Color of rectangle in BGR
- */
-void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
-		     u_int colorBGR)
-{
-  /**< top & bot */
-  fillRectangle(colMin, rowMin, width, 1, colorBGR);
-  fillRectangle(colMin, rowMin + height, width, 1, colorBGR);
-
-  /**< left & right */
-  fillRectangle(colMin, rowMin, 1, height, colorBGR);
-  fillRectangle(colMin + width, rowMin, 1, height, colorBGR);
-}
-
