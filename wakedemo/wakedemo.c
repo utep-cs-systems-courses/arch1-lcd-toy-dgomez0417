@@ -27,7 +27,7 @@ void wdt_c_handler()
   
   if (secCount == 450) {		/* once/sec */
     secCount = 0;
-    fontFgColor = (fontFgColor == COLOR_TURQUOISE) ? COLOR_PURPLE : COLOR_TURQUOISE;
+    fontFgColor = chooseColor(fontFgColor);
     redrawScreen = 1;
   }
   if (dsecCount == 45) { /*10x / sec*/
@@ -41,11 +41,11 @@ void wdt_c_handler()
   }
 }
   
-u_int chooseColor(u_int color){
+/*u_int chooseColor(u_int color){
   if (color == COLOR_TURQUOISE) return COLOR_PURPLE;
   else if (color == COLOR_PURPLE) return COLOR_VIOLET;
   else return COLOR_TURQUOISE;
-}
+  }*/
 
 void main()
 {
@@ -60,13 +60,12 @@ void main()
   
   clearScreen(COLOR_BLACK);
   while (1) {                   /* forever */
-    
     switchesDiamond();
     
     if (redrawScreen) {
       redrawScreen = 0;
       drawString11x16(WordCol,10, "color game", COLOR_BLACK, COLOR_BLACK);
-      drawString11x16(nextWordCol,10, "color game", fontFgColor, COLOR_BLACK);
+      drawString11x16(nextWordCol,10, "color game", chooseColor(fontFgColor), COLOR_BLACK);
       WordCol = nextWordCol;
     }
     P1OUT &= ~LED_GREEN;	/* green off */
@@ -97,6 +96,8 @@ void switchesDiamond(){
       makeDiamond3();
     }
     else{
+      allShape();
       clearScreen(COLOR_BLACK);
+     
     }
 }
