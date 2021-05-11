@@ -4,17 +4,17 @@
 	.text
 	.global chooseColor
 chooseColor:
-	cmp &COLOR_GREEN, r12	   ; color - COLOR_GREEN  /*this is a note: r12 first parameter*/
+	sub &0x07e0, r12	   ; color - COLOR_GREEN  /*this is a note: r12 first parameter*/
 	jnz notGreen               ; if not equal go to notGreen /*this is a note: JNE = jumo if not equal/zero*/
-	mov &COLOR_PURPLE, r12     ; set COLOR_PURPLE as return value
+	mov &0xf114, r12    	   ; set COLOR_PURPLE as return value
 	pop r0                     ; return
 
 notGreen:
-	cmp &COLOR_PURPLE, r12     ; color - COLOR_PURPLE
+	sub &0xf114, r12     	   ; color - COLOR_PURPLE
 	jnz notPurple              ; if not equal go to notPruple 
-	mov &COLOR_TURQUOISE, r12  ; set COLOR_TURQUOISE as return value
+	mov &0xd708, r12  	   ; set COLOR_TURQUOISE as return value
 	pop r0                     ; return
 
 notPurple:
-	mov &COLOR_GREEN, r12      ; set COLOR_GREEN as return value
+	mov &0x07e0, r12      	   ; set COLOR_GREEN as return value
 	pop r0                     ; return
